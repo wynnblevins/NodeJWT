@@ -11,7 +11,7 @@ const users = [];
 let refreshTokens = [];
 
 const generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
 };
 
 app.post('/token', (req, res) => {
@@ -30,7 +30,7 @@ app.post('/token', (req, res) => {
       res.sendStatus(403);  
     }
 
-    const accessToken = generateAccessToken({ name: user.username });
+    const accessToken = generateAccessToken({ username: user.username });
     res.json({ accessToken })
   });
 });
@@ -86,4 +86,4 @@ app.post('/users/login', async (req, res) => {
   }
 });
 
-app.listen(3000);
+app.listen(2000);

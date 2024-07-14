@@ -1,23 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const app = express();
 
 app.use(express.json());
 
-// dummy data
-const posts = [
-  {
-    username: 'Bob',
-    title: 'Post 1'
-  },
-  {
-    username: 'Tom',
-    title: 'Post 2'
-  }  
-];
+// simulating a list of posts with an empty array
+const posts = [];
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -34,10 +24,15 @@ const authenticateToken = (req, res, next) => {
 
 app.get('/posts', authenticateToken, (req, res) => {
   const filteredPosts = posts.filter((post) => {
-    return post.username === req.user.name;
+    return post.username === req.user.username;
   });
   
   res.json(filteredPosts);
 });
+
+app.post('/posts', authenticateToken, (req, res) => {
+  posts.push(req.body);
+  res.sendStatus(201);
+})
 
 app.listen(4000);
